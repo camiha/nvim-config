@@ -1,36 +1,39 @@
 let $LANG='en_US.UTF-8'
 
+" setting for vscode' neovim
 if exists('g:vscode')
-    " VSCode extension
- call plug#begin('~/.local/share/nvim/plugged')
- Plug 'tpope/vim-surround'
- call plug#end()
-
+  call plug#begin('~/.local/share/nvim/plugged')
+  Plug 'tpope/vim-surround'
+  call plug#end()
+  
+" setting for default
 else
-  set encoding=UTF-8
 
-  set t_Co=256
+  " --------------------------------
+  " Basics
+  " --------------------------------
+  syntax on
   filetype plugin on
-  " 全角スペースにシンタックスハイライトをかける
-  "  augroup highlightIdegraphicSpace
-  "    autocmd!
-  "    autocmd Colorscheme * highlight IdeographicSpace term=underline ctermbg=DarkGree
-  "    autocmd VimEnter,WinEnter * match IdeographicSpace /　/
-  "  augroup END
-
+  set encoding=UTF-8
+  set t_Co=256
   set splitbelow
   set title
   set number
   set notitle
-  syntax on
-
-  " 記号などで字が潰れるのを防ぐ
+  set showcmd
+  set hlsearch
+  set laststatus=2
+  set showmatch matchtime=1
+  set backspace=indent,eol,start
+  set virtualedit=onemore
+  set noswapfile
+  set wildmenu
+  set history=5000
   set ambiwidth=double
-
-  " カーソルの位置を表示する
   set ruler
+  set nowrap
 
-  " インデント周りの設定
+  " indent setting
   set shiftwidth=2
   set softtabstop=2
   set tabstop=2
@@ -38,79 +41,41 @@ else
   set autoindent
   set smartindent
 
-  " 入力中のコマンドを表示
-  set showcmd
-
-  " 検索結果をハイライトで表示
-  set hlsearch
-
-  " ステータスバーを表示
-  set laststatus=2
-
-  " 対応するかっこやプレースを表示
-  set showmatch matchtime=1
-
-  " 文字の削除をバックスペースでもできるようにする
-  set backspace=indent,eol,start
-
-  " 行末の1文字先までカーソルを移動できるようにする
-  set virtualedit=onemore
-
-  " スワップファイルを作成しないようにする
-  set noswapfile
-
-  " ヤンクしたテキストをクリップボードにもコピーできるようにする
-  " set clipboard+=unnamed
-  " set clipboard+=unnamed,autoselect
-
-  " コマンドの補完
-  set wildmenu
-  set history=5000
-
-  " terminal job fix
-  tnoremap <Esc> <C-\><C-n>
-
-  " 画面分割のキーバインドを変更
-  map vsplit vs
-  map split sp
-
-  " 行を折り返さない
-  set nowrap
-
-  " インサートモード時のキーマッピング
-  " ()と{}と[]と引用符の補完
-  inoremap (<Enter> ()<Left>
-  inoremap {<Enter> {}<Left>
-  inoremap [<Enter> []<Left>
-  inoremap "<Enter> ""<Left>
-  inoremap '<Enter> ''<Left>
-  inoremap `<Enter> ``<Left>
-
-  inoremap {<Space> {}<Left><CR><ESC><S-o>
-  inoremap [<Space> []<Left><CR><ESC><S-o>
-
-  " ESC連打でハイライト解除
-  nnoremap <Esc><Esc> :noh<CR><Esc>
-
-
+  " change cursor
   if has('vim_starting')
-      " 挿入モード時に非点滅の縦棒タイプのカーソル
-      let &t_SI .= "\e[6 q"
-      " ノーマルモード時に非点滅のブロックタイプのカーソル
-      let &t_EI .= "\e[2 q"
-      " 置換モード時に非点滅の下線タイプのカーソル
-      let &t_SR .= "\e[4 q"
+    let &t_SI .= "\e[6 q"
+    let &t_EI .= "\e[2 q"
+    let &t_SR .= "\e[4 q"
   endif
 
-  " theme
+  " --------------------------------
+  " Theme
+  " --------------------------------
   let g:hybrid_use_iTerm_colors = 1
   colorscheme hybrid
 
-  " remaps
-  inoremap <silent> jk <ESC>
-  " 補完表示時のEnterで改行をしない
-  inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
+  " --------------------------------
+  " Remaps
+  " --------------------------------
+  let mapleader = ","
  
+  map vsplit vs
+  map split sp
+
+  tnoremap <Esc> <C-\><C-n>
+  inoremap <silent> jk <ESC>
+  
+  " disable line-break by enter when show complete
+  inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
+  " clear highlight
+  nnoremap <Esc><Esc> :noh<CR><Esc>
+
+  highlight Normal ctermbg=none
+  highlight NonText ctermbg=none
+  highlight LineNr ctermbg=none
+  highlight Folded ctermbg=none
+  highlight EndOfBuffer ctermbg=none
+
   " Move current line to up/down
   " Ref: https://vim.fandom.com/wiki/Moving_lines_up_or_down
   nnoremap <A-j> :m .+1<CR>==
@@ -133,15 +98,6 @@ else
     vnoremap ˚ :m '<-2<CR>gv=gv
   endif
  
-  let mapleader = ","
-
- 
-  highlight Normal ctermbg=none
-  highlight NonText ctermbg=none
-  highlight LineNr ctermbg=none
-  highlight Folded ctermbg=none
-  highlight EndOfBuffer ctermbg=none
-
   " --------------------------------
   " Plugins Settings
   " --------------------------------
@@ -181,12 +137,8 @@ else
     Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'lepture/vim-jinja'
 
-    " linter and formatter
-    " Plug 'dense-analysis/ale'
-
     " utility
     Plug 'mattn/emmet-vim'
-    Plug 'cohama/lexima.vim'
 
   call plug#end()   
   
@@ -381,10 +333,4 @@ else
   nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
   " Resume latest coc list.
   nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
-  " --------------------------------
-  " ALE Settings
-  " --------------------------------
 endif
-
-
