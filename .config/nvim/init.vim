@@ -110,8 +110,111 @@ else
   inoremap <silent> jk <ESC>
   " 補完表示時のEnterで改行をしない
   inoremap <expr><CR>  pumvisible() ? "<C-y>" : "<CR>"
+ 
+  " Move current line to up/down
+  " Ref: https://vim.fandom.com/wiki/Moving_lines_up_or_down
+  nnoremap <A-j> :m .+1<CR>==
+  nnoremap <A-k> :m .-2<CR>==
+  inoremap <A-j> <Esc>:m .+1<CR>==gi
+  inoremap <A-k> <Esc>:m .-2<CR>==gi
+  vnoremap <A-j> :m '>+1<CR>gv=gv
+  vnoremap <A-k> :m '<-2<CR>gv=gv
+  " When MacOS
+  " Ref: https://stackoverflow.com/questions/7501092/can-i-map-alt-key-in-vim
+  if has('macunix')
+    " Option + J/K
+    " ∆ == J
+    " ˚ == K
+    nnoremap ∆ :m .+1<CR>==
+    nnoremap ˚ :m .-2<CR>==
+    inoremap ∆ <Esc>:m .+1<CR>==gi
+    inoremap ˚ <Esc>:m .-2<CR>==gi
+    vnoremap ∆ :m '>+1<CR>gv=gv
+    vnoremap ˚ :m '<-2<CR>gv=gv
+  endif
+ 
+  let mapleader = ","
 
-  " coc
+ 
+  highlight Normal ctermbg=none
+  highlight NonText ctermbg=none
+  highlight LineNr ctermbg=none
+  highlight Folded ctermbg=none
+  highlight EndOfBuffer ctermbg=none
+
+  " --------------------------------
+  " Plugins Settings
+  " --------------------------------
+  call plug#begin('~/.local/share/nvim/plugged')
+    " Basics
+    Plug 'tpope/vim-surround'
+    Plug 'tpope/vim-sensible'
+    Plug 'tpope/vim-commentary'
+    Plug 'Yggdroot/indentLine'
+
+    " Nerd Fonts
+    Plug 'lambdalisue/nerdfont.vim'
+    Plug 'lambdalisue/glyph-palette.vim'
+
+    " status line
+    Plug 'itchyny/lightline.vim'
+
+    " fuzzy finder
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+
+    " file tree
+    Plug 'lambdalisue/fern.vim'
+    Plug 'lambdalisue/fern-hijack.vim'
+    Plug 'lambdalisue/fern-git-status.vim'
+    Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+    Plug 'yuki-yano/fern-preview.vim'
+
+    " git plugins
+    Plug 'tpope/vim-fugitive'
+    Plug 'airblade/vim-gitgutter'
+    
+    " lsp
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+    " syntax
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    Plug 'lepture/vim-jinja'
+
+    " linter and formatter
+    " Plug 'dense-analysis/ale'
+
+    " utility
+    Plug 'mattn/emmet-vim'
+    Plug 'cohama/lexima.vim'
+
+  call plug#end()   
+  
+  " --------------------------------
+  " Nerd Fonts Settings
+  " --------------------------------
+  augroup my-glyph-palette
+    autocmd! *
+    autocmd FileType fern call glyph_palette#apply()
+    autocmd FileType nerdtree,startify call glyph_palette#apply()
+  augroup END
+
+  " --------------------------------
+  " Telescope Settings
+  " --------------------------------
+  nnoremap <leader>ff <cmd>Telescope find_files<cr>
+  nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+  nnoremap <leader>fb <cmd>Telescope buffers<cr>
+  nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+  " --------------------------------
+  " Fern Settings
+  " --------------------------------
+  let g:fern#renderer = "nerdfont"
+
+  " --------------------------------
+  " CoC Settings
+  " --------------------------------
   " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
   " unicode characters in the file autoload/float.vim
   set encoding=utf-8
@@ -147,11 +250,11 @@ else
   " other plugin before putting this into your config.
   inoremap <silent><expr> <TAB>
         \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
+        \ CheckBackspace() ? "\<TAB>" :
         \ coc#refresh()
   inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-  function! s:check_back_space() abort
+  function! CheckBackspace() abort
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~# '\s'
   endfunction
@@ -180,15 +283,13 @@ else
   nmap <silent> gr <Plug>(coc-references)
 
   " Use K to show documentation in preview window.
-  nnoremap <silent> K :call <SID>show_documentation()<CR>
+  nnoremap <silent> K :call ShowDocumentation()<CR>
 
-  function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-      execute 'h '.expand('<cword>')
-    elseif (coc#rpc#ready())
+  function! ShowDocumentation()
+    if CocAction('hasProvider', 'hover')
       call CocActionAsync('doHover')
     else
-      execute '!' . &keywordprg . " " . expand('<cword>')
+      call feedkeys('K', 'in')
     endif
   endfunction
 
@@ -281,53 +382,9 @@ else
   " Resume latest coc list.
   nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-
-  " ordinary neovim
-  call plug#begin('~/.local/share/nvim/plugged')
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-sensible'
-    " 1, インデントの可視化
-    Plug 'Yggdroot/indentLine'
-    " 3, ステータスバーのカスタマイズ
-    Plug 'itchyny/lightline.vim'
-    " 4, gitの情報を表示
-    Plug 'tpope/vim-fugitive'
-    " 5, 補完
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    " 6, エメット
-    Plug 'mattn/emmet-vim'
-    " 7, jsx・tsxのシンタックスハイライト
-    Plug 'othree/yajs.vim', { 'for': ['jsx', 'tsx', 'es6'] }
-    Plug 'maxmellon/vim-jsx-pretty', { 'for': ['jsx', 'tsx'] }
-    Plug 'HerringtonDarkholme/yats.vim', { 'for': ['jsx', 'tsx'] }
-    " 9, 各種Lintを非同期実行
-    Plug 'w0rp/ale'
-    Plug 'lepture/vim-jinja'
-    Plug 'cohama/lexima.vim'
-  
-    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    Plug 'junegunn/fzf.vim'
-  call plug#end()   
- 
-  " fzf settings
-  let $FZF_DEFAULT_OPTS="--layout=reverse"
-  let $FZF_DEFAULT_COMMAND="rg --files --hidden --glob '!.git/**'"
-  let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'border': 'sharp' } }
-
-  let mapleader = "\<Space>"
-
-  " fzf
-  nnoremap <silent> <leader>f :Files<CR>
-  nnoremap <silent> <leader>g :GFiles<CR>
-  nnoremap <silent> <leader>G :GFiles?<CR>
-  nnoremap <silent> <leader>b :Buffers<CR>
-  nnoremap <silent> <leader>h :History<CR>
-  nnoremap <silent> <leader>r :Rg<CR>
-
-  highlight Normal ctermbg=none
-  highlight NonText ctermbg=none
-  highlight LineNr ctermbg=none
-  highlight Folded ctermbg=none
-  highlight EndOfBuffer ctermbg=none
+  " --------------------------------
+  " ALE Settings
+  " --------------------------------
 endif
+
 
