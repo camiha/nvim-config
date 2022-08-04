@@ -7,6 +7,8 @@
     "typescript",
     "javascript",
     "json",
-    "markdown"
-  ]
+    "markdown",
+    "go"
+  ],
+  "zig.path": "~/zls/zls"
 }

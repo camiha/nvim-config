@@ -149,6 +149,9 @@ else
     Plug 'lepture/vim-jinja'
     Plug 'ziglang/zig.vim'
 
+    Plug 'SirVer/ultisnips'
+    Plug 'honza/vim-snippets'
+
     " utility
     Plug 'mattn/emmet-vim'
 
@@ -354,6 +357,16 @@ else
   nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
   " Resume latest coc list.
   nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+  
+  " --------------------------------
+  " snippets Settings
+  " --------------------------------
+  let g:UltiSnipsExpandTrigger="<tab>"
+  let g:UltiSnipsJumpForwardTrigger="<c-b>"
+  let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
+  let g:UltiSnipsEditSplit="vertical"
+  let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/UtiSnips']
 
   " --------------------------------
   " treesitter Settings
