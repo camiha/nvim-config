@@ -31,9 +31,9 @@ else
   set history=5000
   set ambiwidth=double
   set ruler
-  set nowrap
+  " set nowrap
   set mouse=a
-  set fillchars=eob:\ 
+  "set fillchars=eob:/
 
   " indent setting
   set shiftwidth=2
@@ -49,6 +49,8 @@ else
     let &t_EI .= "\e[2 q"
     let &t_SR .= "\e[4 q"
   endif
+
+  " autocmd BufNewFile,BufRead *.njk  set filetype=liquid
 
   " --------------------------------
   " clipboard setting
@@ -145,10 +147,13 @@ else
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
     " syntax
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+    " Plug 'Glench/Vim-Jinja2-Syntax'
     Plug 'lepture/vim-jinja'
+    " Plug 'tpope/vim-liquid'
+    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
     Plug 'ziglang/zig.vim'
 
+    " snippets
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
 
@@ -357,7 +362,7 @@ else
   nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
   " Resume latest coc list.
   nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-  
+
   " --------------------------------
   " snippets Settings
   " --------------------------------
@@ -366,7 +371,7 @@ else
   let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
   let g:UltiSnipsEditSplit="vertical"
-  let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/UtiSnips']
+  let g:UltiSnipsSnippetDirectories=[$HOME.'/.config/nvim/UltiSnips']
 
   " --------------------------------
   " treesitter Settings
@@ -382,4 +387,3 @@ else
   }
 EOF
 endif
-
