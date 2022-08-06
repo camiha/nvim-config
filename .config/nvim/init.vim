@@ -1,13 +1,10 @@
 let $LANG='en_US.UTF-8'
 
-" setting for vscode' neovim
 if exists('g:vscode')
-  call plug#begin('~/.local/share/nvim/plugged')
-  Plug 'tpope/vim-surround'
-  call plug#end()
+  " VSCode Neovim setting
 
-" setting for default
 else
+  " Neovim setting
 
   " --------------------------------
   " Basics
@@ -50,7 +47,7 @@ else
     let &t_SR .= "\e[4 q"
   endif
 
-  " autocmd BufNewFile,BufRead *.njk  set filetype=liquid
+  autocmd BufNewFile,BufRead *.njk  set filetype=html
 
   " --------------------------------
   " clipboard setting
@@ -64,6 +61,7 @@ else
   " --------------------------------
   let g:hybrid_use_iTerm_colors = 1
   colorscheme hybrid
+  hi NormalFloat guibg=#666666
 
   " --------------------------------
   " Remaps
@@ -112,58 +110,77 @@ else
   endif
 
   " --------------------------------
-  " Plugins Settings
+  " dein.vim setting
   " --------------------------------
-  call plug#begin('~/.local/share/nvim/plugged')
-    " Basics
-    Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-sensible'
-    Plug 'tpope/vim-commentary'
-    Plug 'Yggdroot/indentLine'
 
-    " Nerd Fonts
-    Plug 'lambdalisue/nerdfont.vim'
-    Plug 'lambdalisue/glyph-palette.vim'
+  " dein install script
+  " curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > installer.sh
+  " sh ./installer.sh ~/.cache/dein
 
-    " status line
-    Plug 'itchyny/lightline.vim'
+  if &compatible
+    set nocompatible " Be iMproved
+  endif
 
-    " fuzzy finder
-    Plug 'nvim-lua/plenary.nvim'
-    Plug 'nvim-telescope/telescope.nvim', { 'tag': '0.1.0' }
+  " Required:
+  set runtimepath+=/Users/cyamy/.cache/dein/repos/github.com/Shougo/dein.vim
 
-    " file tree
-    Plug 'lambdalisue/fern.vim'
-    Plug 'lambdalisue/fern-hijack.vim'
-    Plug 'lambdalisue/fern-git-status.vim'
-    Plug 'lambdalisue/fern-renderer-nerdfont.vim'
-    Plug 'yuki-yano/fern-preview.vim'
+  " Required:
+  call dein#begin('/Users/cyamy/.cache/dein')
 
-    " git plugins
-    Plug 'tpope/vim-fugitive'
-    Plug 'airblade/vim-gitgutter'
+  " Let dein manage dein
+  " Required:
+  call dein#add('/Users/cyamy/.cache/dein/repos/github.com/Shougo/dein.vim')
 
-    " lsp
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+  " Basics
+  call dein#add('tpope/vim-surround')
+  call dein#add('tpope/vim-sensible')
+  call dein#add('tpope/vim-commentary')
+  call dein#add('Yggdroot/indentLine')
 
-    " syntax
-    " Plug 'Glench/Vim-Jinja2-Syntax'
-    Plug 'lepture/vim-jinja'
-    " Plug 'tpope/vim-liquid'
-    Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-    Plug 'ziglang/zig.vim'
+  " Nerd Fonts
+  call dein#add('lambdalisue/nerdfont.vim')
+  call dein#add('lambdalisue/glyph-palette.vim')
 
-    " snippets
-    Plug 'SirVer/ultisnips'
-    Plug 'honza/vim-snippets'
+  " Status Line
+  call dein#add('itchyny/lightline.vim')
 
-    " utility
-    Plug 'mattn/emmet-vim'
+  " Fuzzy Finder
+  call dein#add('nvim-lua/plenary.nvim')
+  call dein#add('nvim-telescope/telescope.nvim')
 
-    " others
-    Plug 'kovisoft/slimv'
+  " File Tree
+  call dein#add('lambdalisue/fern.vim')
+  call dein#add('lambdalisue/fern-hijack.vim')
+  call dein#add('lambdalisue/fern-git-status.vim')
+  call dein#add('lambdalisue/fern-renderer-nerdfont.vim')
+  call dein#add('yuki-yano/fern-preview.vim')
 
-  call plug#end()
+  " Git
+  call dein#add('tpope/vim-fugitive')
+  call dein#add('airblade/vim-gitgutter')
+
+  " LSP
+  call dein#add('neoclide/coc.nvim')
+
+  " Syntax
+  call dein#add('nvim-treesitter/nvim-treesitter')
+
+  " Snippets
+  call dein#add('SirVer/ultisnips')
+  call dein#add('honza/vim-snippets')
+
+  " Utility
+  call dein#add('mattn/emmet-vim')
+
+  " Others
+  call dein#add('kovisoft/slimv')
+
+  " Required:
+  call dein#end()
+
+  " Required:
+  filetype plugin indent on
+  syntax enable
 
   " --------------------------------
   " indentLine Settings
@@ -196,44 +213,32 @@ else
   " --------------------------------
   " CoC Settings
   " --------------------------------
-  " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
-  " unicode characters in the file autoload/float.vim
-  set encoding=utf-8
-
-  " TextEdit might fail if hidden is not set.
-  set hidden
 
   " Some servers have issues with backup files, see #649.
   set nobackup
   set nowritebackup
 
-  " Give more space for displaying messages.
-  set cmdheight=2
-
   " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
   " delays and poor user experience.
   set updatetime=300
 
-  " Don't pass messages to |ins-completion-menu|.
-  set shortmess+=c
-
   " Always show the signcolumn, otherwise it would shift the text each time
   " diagnostics appear/become resolved.
-  if has("nvim-0.5.0") || has("patch-8.1.1564")
-    " Recently vim can merge signcolumn and number column into one
-    set signcolumn=number
-  else
-    set signcolumn=yes
-  endif
+  set signcolumn=yes
 
   " Use tab for trigger completion with characters ahead and navigate.
   " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
   " other plugin before putting this into your config.
   inoremap <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ CheckBackspace() ? "\<TAB>" :
+        \ coc#pum#visible() ? coc#pum#next(1):
+        \ CheckBackspace() ? "\<Tab>" :
         \ coc#refresh()
-  inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+  " Make <CR> to accept selected completion item or notify coc.nvim to format
+  " <C-g>u breaks current undo, please make your own choice.
+  inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                                \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
   function! CheckBackspace() abort
     let col = col('.') - 1
@@ -246,11 +251,6 @@ else
   else
     inoremap <silent><expr> <c-@> coc#refresh()
   endif
-
-  " Make <CR> auto-select the first completion item and notify coc.nvim to
-  " format on enter, <cr> could be remapped by other vim plugin
-  inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                                \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
   " Use `[g` and `]g` to navigate diagnostics
   " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.

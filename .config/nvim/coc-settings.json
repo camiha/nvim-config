@@ -3,11 +3,13 @@
   "eslint.enable": true,
   "eslint.autoFixOnSave": true,
   "coc.preferences.formatOnSaveFiletypes": [
-    "css,scss",
+    "css",
+    "scss",
     "typescript",
     "javascript",
     "json",
     "markdown",
+    "njk",
     "go"
   ],
   "zig.path": "~/zls/zls"
