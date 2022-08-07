@@ -30,7 +30,7 @@ else
   set ruler
   " set nowrap
   set mouse=a
-  "set fillchars=eob:/
+  " set fillchars=eob:/
 
   " indent setting
   set shiftwidth=2
@@ -61,6 +61,7 @@ else
   " --------------------------------
   let g:hybrid_use_iTerm_colors = 1
   colorscheme hybrid
+  hi NormalFloat guibg=#666666
 
   " --------------------------------
   " Remaps
@@ -224,6 +225,7 @@ else
   " Always show the signcolumn, otherwise it would shift the text each time
   " diagnostics appear/become resolved.
   set signcolumn=yes
+  hi clear SignColumn
 
   " Use tab for trigger completion with characters ahead and navigate.
   " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
