@@ -61,7 +61,6 @@ else
   " --------------------------------
   let g:hybrid_use_iTerm_colors = 1
   colorscheme hybrid
-  hi NormalFloat guibg=#666666
 
   " --------------------------------
   " Remaps
@@ -160,7 +159,7 @@ else
   call dein#add('airblade/vim-gitgutter')
 
   " LSP
-  call dein#add('neoclide/coc.nvim')
+  call dein#add('neoclide/coc.nvim', {'merged':0, 'rev': 'release'})
 
   " Syntax
   call dein#add('nvim-treesitter/nvim-treesitter')

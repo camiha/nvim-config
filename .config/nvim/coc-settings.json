@@ -1,7 +1,9 @@
 {
-  "stylelint.enable": true,
   "eslint.enable": true,
   "eslint.autoFixOnSave": true,
+  "stylelintplus.autoFixOnFormat": true,
+  "stylelintplus.autoFixOnSave": true,
+  "stylelintplus.validateOnSave": true,
   "coc.preferences.formatOnSaveFiletypes": [
     "css",
     "scss",
@@ -11,6 +13,5 @@
     "markdown",
     "njk",
     "go"
-  ],
-  "zig.path": "~/zls/zls"
+  ]
 }
