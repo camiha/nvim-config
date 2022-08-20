@@ -1,18 +1,22 @@
 {
   "eslint.enable": true,
   "eslint.autoFixOnSave": true,
+  "css.validate": false,
+  "scss.validate": false,
   "stylelintplus.autoFixOnFormat": true,
   "stylelintplus.autoFixOnSave": true,
   "stylelintplus.validateOnSave": true,
   "coc.preferences.formatOnSaveFiletypes": [
-    "css",
-    "scss",
     "typescript",
+    "typescriptreact",
     "javascript",
+    "javascriptreact",
     "json",
-    "markdown",
     "njk",
-    "go"
+    "go",
+    "cpp"
   ],
+  "prettier.requireConfig": true,
+  "prettier.onlyUseLocalVersion": true,
   "snippets.ultisnips.directories": ["UltiSnips", "~/.config/nvim/UltiSnips"]
 }
